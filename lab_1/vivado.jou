@@ -1,0 +1,14 @@
+#-----------------------------------------------------------
+# Vivado v2017.2 (64-bit)
+# SW Build 1909853 on Thu Jun 15 18:39:09 MDT 2017
+# IP Build 1909766 on Thu Jun 15 19:58:00 MDT 2017
+# Start of session at: Thu Nov 16 20:01:46 2023
+# Process ID: 23276
+# Current directory: D:/Xilinx_practice/lab_1
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent23484 D:\Xilinx_practice\lab_1\lab_1.xpr
+# Log file: D:/Xilinx_practice/lab_1/vivado.log
+# Journal file: D:/Xilinx_practice/lab_1\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project D:/Xilinx_practice/lab_1/lab_1.xpr
+update_compile_order -fileset sources_1
