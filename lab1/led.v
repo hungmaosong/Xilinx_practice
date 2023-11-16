@@ -97,6 +97,37 @@ module led(
                led <= switch;
            end
       end
-      
+
+    //timer
+    always @(posedge clk or posedge reset) begin
+       if(reset)
+       begin
+            if(switch[0]) timer <= 7;
+            else timer <= 15;
+       end
+       else
+       begin
+
+       end
+    end
+    
+    //counter
+    always @(posedge clk or posedge reset) begin
+        if(reset)
+        begin
+            counter <= 0;
+        end
+        else
+        begin
+            if(counter == 16666650)
+            begin
+                counter <= 0;
+            end
+            else
+            begin
+                counter <= counter + 1;
+            end
+        end
+    end
     
 endmodule
