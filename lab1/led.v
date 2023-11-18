@@ -33,7 +33,7 @@ module led(
     /*狀態*/
     /*自訂變數*/
     reg [4:0] timer;
-    reg [24:0] counter; //除頻用(數到16666650)
+    reg [26:0] counter; //除頻用(數到100000000)
     /*自訂變數*/
     
     //nextstate logic
@@ -107,7 +107,100 @@ module led(
        end
        else
        begin
-
+            if(switch[0])
+            begin
+                case (current_state)
+                    Green: 
+                    begin
+                        if(counter == 100000000)
+                        begin
+                            if(timer == 0)
+                            begin
+                                timer <= 1;
+                            end
+                            else
+                            begin
+                                timer <= timer - 1;
+                            end
+                        end
+                    end
+                    Yellow:
+                    begin
+                        if(counter == 100000000)
+                        begin
+                            if(timer == 0)
+                            begin
+                                timer <= 8;
+                            end
+                            else
+                            begin
+                                timer <= timer - 1;
+                            end
+                        end
+                    end
+                    Red: 
+                    begin
+                        if(counter == 100000000)
+                        begin
+                            if(timer == 0)
+                            begin
+                                timer <= 7;
+                            end
+                            else
+                            begin
+                                timer <= timer - 1;
+                            end
+                        end
+                    end
+                endcase
+            end
+            else
+            begin
+                case (current_state)
+                    Green: 
+                    begin
+                        if(counter == 100000000)
+                        begin
+                            if(timer == 0)
+                            begin
+                                timer <= 1;
+                            end
+                            else
+                            begin
+                                timer <= timer - 1;
+                            end
+                        end
+                    end
+                    Yellow:
+                    begin
+                        if(counter == 100000000)
+                        begin
+                            if(timer == 0)
+                            begin
+                                timer <= 16;
+                            end
+                            else
+                            begin
+                                timer <= timer - 1;
+                            end
+                        end
+                    end
+                    Red: 
+                    begin
+                        if(counter == 100000000)
+                        begin
+                            if(timer == 0)
+                            begin
+                                timer <= 15;
+                            end
+                            else
+                            begin
+                                timer <= timer - 1;
+                            end
+                        end
+                    end
+                endcase
+            end
        end
     end
     
@@ -119,7 +212,7 @@ module led(
         end
         else
         begin
-            if(counter == 16666650)
+            if(counter == 100000000)
             begin
                 counter <= 0;
             end
