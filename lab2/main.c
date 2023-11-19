@@ -1,7 +1,7 @@
 /*
  * main.c
  *
- *  Created on: 2020¦~2¤ë3¤é
+ *  Created on: 2020ï¿½~2ï¿½ï¿½3ï¿½ï¿½
  *      Author: user
  */
 
@@ -13,6 +13,14 @@
 
 int main()
 {
+   XGpio led_gpio, switch_gpio;
+   char led = 0;
+   char switch = 0;
+   int switch_data;
+/*
+   XGpio_Initialize(&led_gpio, XPAR_AXI_GPIO_0_DEVICE_ID); // initialize output XGpio variable
+   XGpio_Initialize(&switch_gpio, XPAR_AXI_GPIO_1_DEVICE_ID); // initialize input XGpio variable
+
    XGpio gpio0, gpio1;
    int button_data = 0;
    int switch_data = 0;
@@ -24,37 +32,47 @@ int main()
    XGpio_SetDataDirection(&gpio0, 2, 0xF);			//set second channel tristate buffer to input
 
    XGpio_SetDataDirection(&gpio1, 1, 0xF);		//set first channel tristate buffer to input
-
+*/
    while(1){
-      switch_data = XGpio_DiscreteRead(&gpio0, 2);	//get switch data
+      switch_data = XGpio_DiscreteRead(&switch_gpio, 1) // get switch data
 
-      XGpio_DiscreteWrite(&gpio0, 1, switch_data);	//write switch data to the LEDs
-
-      button_data = XGpio_DiscreteRead(&gpio1, 1);	//get button data
-
-      //print message dependent on whether one or more buttons are pressed
-      if(button_data == 0b00000){} //do nothing
-
-      else if(button_data == 0b00001)
-         xil_printf("button 0 pressed\n\r");
-
-      else if(button_data == 0b00010)
-         xil_printf("button 1 pressed\n\r");
-
-      else if(button_data == 0b00100)
-         xil_printf("button 2 pressed\n\r");
-
-      else if(button_data == 0b01000)
-         xil_printf("button 3 pressed\n\r");
-
-      else if(button_data == 0b10000)
-              xil_printf("button 4 pressed\n\r");
-
+      if(switch_data & 0b00000001 == 0)
+      {
+         
+      }
       else
-         xil_printf("multiple buttons pressed\n\r");
+      {
+         /* code */
+      }
+      
+      /*
+         switch_data = XGpio_DiscreteRead(&gpio0, 2);	//get switch data
 
-      usleep(200000);			//delay
+         XGpio_DiscreteWrite(&gpio0, 1, switch_data);	//write switch data to the LEDs
 
+         button_data = XGpio_DiscreteRead(&gpio1, 1);	//get button data
+
+         //print message dependent on whether one or more buttons are pressed
+         if(button_data == 0b00000){} //do nothing
+
+         else if(button_data == 0b00001)
+            xil_printf("button 0 pressed\n\r");
+
+         else if(button_data == 0b00010)
+            xil_printf("button 1 pressed\n\r");
+
+         else if(button_data == 0b00100)
+            xil_printf("button 2 pressed\n\r");
+
+         else if(button_data == 0b01000)
+            xil_printf("button 3 pressed\n\r");
+
+         else if(button_data == 0b10000)
+                 xil_printf("button 4 pressed\n\r");
+
+         else
+            xil_printf("multiple buttons pressed\n\r");
+      */
    }
    return 0;
 }
