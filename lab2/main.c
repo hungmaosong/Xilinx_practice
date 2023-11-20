@@ -11,10 +11,18 @@
 #include "xparameters.h"
 #include "sleep.h"
 
+void simple_delay(int simple_delay)
+{
+   volatile int i = 0;
+   for (i = 0; i < simple_delay; i++)
+      ;
+}
+
 int main()
 {
    XGpio led_gpio, switch_gpio;
    char led = 0;
+   char timer;
    char switch = 0;
    int switch_data;
 /*

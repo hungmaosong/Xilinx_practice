@@ -94,7 +94,20 @@ module led(
                led <= 0;
            end
            else begin
-               led <= switch;
+               case (next_state)
+                Green:
+                begin
+                    led <= 8'b00100000 | timer;
+                end 
+                Yellow:
+                begin
+                    led <= 8'b01000000 | timer;
+                end
+                Red: 
+                begin
+                    led <= 8'b10000000 | timer;
+                end
+               endcase
            end
       end
 
