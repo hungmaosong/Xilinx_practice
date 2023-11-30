@@ -3,9 +3,9 @@
 #include "xparameters.h"
 #include "sleep.h"
 
-#define Green 0
-#define Yellow 1
-#define Red 2
+#define Green 0b00100000
+#define Yellow 0b01000000
+#define Red 0b10000000
 
 void simple_delay(int simple_delay)
 {
@@ -43,12 +43,14 @@ int main()
          {
             state = Green;
             timer = 7;
+            XGpio_DiscreteWrite(&gpio0, 1, state | timer); // write data to the LEDs
             break;
          }
          else
          {
             state = Green;
             timer = 15;
+            XGpio_DiscreteWrite(&gpio0, 1, state | timer); // write data to the LEDs
             break;
          }
       }
@@ -59,8 +61,7 @@ int main()
 
       if(switch_data & 0b00000001 == 0)
       {
-         simple_delay(100000000);
-
+         XGpio_DiscreteWrite(&gpio0, 1, state | timer); // write data to the LEDs
          timer--;
          if(timer == 0)
          {
@@ -83,8 +84,7 @@ int main()
       }
       else
       {
-         simple_delay(100000000);
-
+         XGpio_DiscreteWrite(&gpio0, 1, state | timer); // write data to the LEDs
          timer--;
          if (timer == 0)
          {
@@ -105,8 +105,7 @@ int main()
             }
          }
       }
-      
-     
+      simple_delay(100000000);
    }
    return 0;
 }
