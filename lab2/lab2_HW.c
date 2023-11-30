@@ -17,7 +17,7 @@ void simple_delay(int simple_delay)
 int main()
 {
    XGpio gpio0, gpio1;
-   int led = 0;
+   int led;
    int switch_data;
    int button_data;
 
@@ -31,12 +31,12 @@ int main()
    XGpio_SetDataDirection(&gpio0, 2, 0xF); // set second channel tristate buffer to input (switch)
 
    XGpio_SetDataDirection(&gpio1, 1, 0xF); // set first channel tristate buffer to input (button)
-   
-   //reset(button0)
+
+   // reset(button0)
    while (1)
    {
       button_data = XGpio_DiscreteRead(&gpio1, 1); // get button data
-      switch_data = = XGpio_DiscreteRead(&gpio0, 2); // get switch data
+      switch_data = XGpio_DiscreteRead(&gpio0, 2); // get switch data
       if (button_data == 0b00001)
       {
          if (switch_data == 0b00000001)
@@ -55,17 +55,18 @@ int main()
          }
       }
    }
-   
-   while(1){
-      switch_data = XGpio_DiscreteRead(&switch_gpio, 1) // get switch data
 
-      if(switch_data & 0b00000001 == 0)
+   while (1)
+   {
+      switch_data = XGpio_DiscreteRead(&gpio0, 2); // get switch data
+
+      if (switch_data & 0b00000001 == 0b00000001)
       {
          XGpio_DiscreteWrite(&gpio0, 1, state | timer); // write data to the LEDs
          timer--;
-         if(timer == 0)
+         if (timer == 0)
          {
-            if(state == Green)
+            if (state == Green)
             {
                state = Yellow;
                timer = 1;
@@ -79,7 +80,7 @@ int main()
             {
                state = Green;
                timer = 7;
-            }            
+            }
          }
       }
       else
