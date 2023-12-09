@@ -30,6 +30,7 @@ module VGA_CTRL(
 	parameter V_End = 515 - 1;
 	//不管水平or垂直，依序都是sync => back porch => active => front porch 
 
+	//hcount
 	always @(posedge clk or posedge rst) begin
 		if (rst) begin
 			hcount <= 0;
@@ -42,6 +43,7 @@ module VGA_CTRL(
 		end
 	end
 
+	//vcount
 	always @(posedge clk or posedge rst) begin
 		if (rst) begin
 			vcount <= 0;
@@ -52,74 +54,62 @@ module VGA_CTRL(
 		else if (hcount == H_Total) begin //換行
 			vcount <= vcount + 1;
 		end
+	end
+
+	//hsync
+	always @(*) begin //Sync pulse
+		if (hcount >= 0 && hcount <= H_Sync) begin
+			hsync = 0;
+		end
 		else begin
-			vcount <= vcount;
+			hsync = 1;
 		end
 	end
 
-	always @(posedge clk or posedge rst) begin //Sync pulse
-		if (rst) begin
-			hsync <= 1;		
-		end
-		else if (hcount >= 0 && hcount <= H_Sync) begin
-			hsync <= 0;
+	always @(*) begin //Sync pulse
+		if (vcount >= 0 && vcount <= V_Sync) begin
+			vsync = 0;
 		end
 		else begin
-			hsync <= 1;
-		end
-	end
-
-	always @(posedge clk or posedge rst) begin //Sync pulse
-		if (rst) begin
-			vsync <= 1;		
-		end
-		else if (vcount >= 0 && vcount <= V_Sync) begin
-			vsync <= 0;
-		end
-		else begin
-			vsync <= 1;
+			vsync = 1;
 		end
 	end
 
 	//輸出enable訊號 (Active video區)
-	always @(posedge clk or posedge rst) begin //Active video
-	    if(rst)
-	        hs_data_en <= 1'b0;
-	    else if(hcount >= H_Start && hcount <= H_End)
-	        hs_data_en <= 1'b1;
+	always @(*) begin //Active video
+	    if(hcount > H_Start && hcount <= H_End)
+	        hs_data_en = 1'b1;
 	    else
-	        hs_data_en <= 1'b0;
+	        hs_data_en = 1'b0;
 	end
 
-	always @(posedge clk or posedge rst) begin //Active video
-	    if(rst)
-	        vs_data_en <= 1'b0;
-	    else if(vcount >= V_Start && vcount <= V_End)
-	        vs_data_en <= 1'b1;
+	always @(*) begin //Active video
+		if(vcount > V_Start && vcount <= V_End)
+	        vs_data_en = 1'b1;
 	    else
-	        vs_data_en <= 1'b0;
+	        vs_data_en = 1'b0;
 	end
 
 	
 	always @(*) begin //設定顏色
-          if(hcount >= H_Start && hcount < H_Start + 80)
-              data_in <= 12'hf00;
-          else if(hcount >= H_Start + 80 && hcount < H_Start + 160)
-              data_in <= 12'h0f0;
-          else if(hcount >= H_Start + 160 && hcount < H_Start + 240)
-              data_in <= 12'h00f;
-          else if(hcount >= H_Start + 240 && hcount < H_Start + 320)
-              data_in <= 12'hf0f;
-          else if(hcount >= H_Start + 320 && hcount < H_Start + 400)
-              data_in <= 12'hff0;
-          else if(hcount >= H_Start + 400 && hcount < H_Start + 480)
-              data_in <= 12'h0ff;
-          else if(hcount >= H_Start + 480 && hcount < H_Start + 560)
-              data_in <= 12'hfff;
-          else if(hcount >= H_Start + 560 && hcount < H_Start + 640)
-              data_in <= 12'h000;
+          if(hcount > H_Start && hcount <= H_Start + 80)
+              data_in = 12'hf00;
+          else if(hcount > H_Start + 80 && hcount <= H_Start + 160)
+              data_in = 12'h0f0;
+          else if(hcount > H_Start + 160 && hcount <= H_Start + 240)
+              data_in = 12'h00f;
+          else if(hcount > H_Start + 240 && hcount <= H_Start + 320)
+              data_in = 12'hf0f;
+          else if(hcount > H_Start + 320 && hcount <= H_Start + 400)
+              data_in = 12'hff0;
+          else if(hcount > H_Start + 400 && hcount <= H_Start + 480)
+              data_in = 12'h0ff;
+          else if(hcount > H_Start + 480 && hcount <= H_Start + 560)
+              data_in = 12'hfff;
+          else if(hcount > H_Start + 560 && hcount <= H_Start + 640)
+              data_in = 12'h000;
           else
-              data_in <= 12'hfff ;
+              data_in = 12'hfff ;
         end
 	
 
