@@ -30,7 +30,7 @@ module VGA_CTRL(
 	parameter V_Front = 10 - 1;
 	parameter V_Start = 35 - 1;
 	parameter V_End = 515 - 1;
-	//ä¸ç®¡æ°´å¹³oråž‚ç›´ï¼Œä¾åºéƒ½æ˜¯sync => back porch => active => front porch 
+	//¤£ºÞ¤ô¥­or««ª½¡A¨Ì§Ç³£¬Osync => back porch => active => front porch 
 
 	assign led = cmd;
 	
@@ -39,7 +39,7 @@ module VGA_CTRL(
 		if (rst) begin
 			hcount <= 0;
 		end
-		else if (hcount == H_Total) begin //æ›è¡Œ
+		else if (hcount == H_Total) begin //´«¦æ
 			hcount <= 0;
 		end
 		else begin
@@ -55,7 +55,7 @@ module VGA_CTRL(
 		else if (vcount == V_Total) begin
 			vcount <= 0;
 		end
-		else if (hcount == H_Total) begin //æ›è¡Œ
+		else if (hcount == H_Total) begin //´«¦æ
 			vcount <= vcount + 1;
 		end
 	end
@@ -80,7 +80,7 @@ module VGA_CTRL(
 		end
 	end
 
-	//è¼¸å‡ºenableè¨Šè™Ÿ (Active videoå€) hs_data_en
+	//¿é¥Xenable°T¸¹ (Active video°Ï) hs_data_en
 	always @(*) begin //Active video
 	    if(hcount > H_Start && hcount <= H_End)
 	        hs_data_en = 1'b1;
@@ -88,7 +88,7 @@ module VGA_CTRL(
 	        hs_data_en = 1'b0;
 	end
 
-	//è¼¸å‡ºenableè¨Šè™Ÿ (Active videoå€) vs_data_en
+	//¿é¥Xenable°T¸¹ (Active video°Ï) vs_data_en
 	always @(*) begin //Active video
 		if(vcount > V_Start && vcount <= V_End)
 	        vs_data_en = 1'b1;
@@ -96,26 +96,26 @@ module VGA_CTRL(
 	        vs_data_en = 1'b0;
 	end
     
-	//data_in é¡è‰²è³‡è¨Š
+	//data_in ÃC¦â¸ê°T
     always@(*)begin
 		case(cmd)
 			3'b000:
 			begin
-				data_in = 12'hfff; //ç™½
+				data_in = 12'hfff; //¥Õ
 			end
 			3'b001:
 			begin
-				data_in = 12'hf00; //é»‘
+				data_in = 12'hf00; //¶Â
 			end
 			3'b010:
 			begin
-				data_in = 12'h0f0; //ç¶ 
+				data_in = 12'h0f0; //ºñ
 			end
 			3'b011:
 			begin
-				data_in = 12'h00f; //è—
+				data_in = 12'h00f; //ÂÅ
 			end
-			3'b100: //ç´…è—ç¶ ç™½ 4è¡Œ
+			3'b100: //¬õÂÅºñ¥Õ 4¦æ
 			begin
 				if(vcount > V_Start && vcount <= V_Start + 120)
 					data_in = 12'hf00;
@@ -126,7 +126,7 @@ module VGA_CTRL(
 				else 
 					data_in = 12'hfff;
 			end
-			3'b101: //ç´…è—ç¶ ç™½ 4åˆ—
+			3'b101: //¬õÂÅºñ¥Õ 4¦C
 			begin
 				if(hcount > H_Start && hcount <= H_Start + 160)
 					data_in = 12'hf00;
@@ -137,7 +137,7 @@ module VGA_CTRL(
 				else
 					data_in = 12'hfff;
 			end
-			3'b110: //é»‘ç™½ç›¸é–“ 4*4
+			3'b110: //¶Â¥Õ¬Û¶¡ 4*4
 			begin
 				if((hcount > H_Start && hcount <= H_Start + 160 && vcount > V_Start && vcount <= V_Start + 120)
 				|| (hcount > H_Start + 320 && hcount <= H_Start + 480 && vcount > V_Start && vcount <= V_Start +120)
@@ -147,9 +147,9 @@ module VGA_CTRL(
 				|| (hcount > H_Start + 320 && hcount <= H_Start + 480 && vcount > V_Start + 240 && vcount <= V_Start + 360)
 				|| (hcount > H_Start + 160 && hcount <= H_Start + 320 && vcount > V_Start + 360 && vcount <= V_Start + 480)
 				|| (hcount > H_Start + 480 && hcount <= H_Start + 640 && vcount > V_Start + 360 && vcount <= V_Start + 480))
-					data_in = 12'hfff; //ç™½
+					data_in = 12'hfff; //¥Õ
 				else 
-					data_in = 12'h0; //é»‘
+					data_in = 12'h0; //¶Â
 			end
 			default:
 			begin
